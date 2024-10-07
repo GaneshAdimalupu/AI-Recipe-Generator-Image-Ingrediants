@@ -9,7 +9,7 @@ from Foodimg2Ing.args import get_parser
 import pickle
 from Foodimg2Ing.model import get_model
 from torchvision import transforms
-from Foodimg2Ing.utils.output_utils import prepare_output
+from utils.output_utils import prepare_output
 from PIL import Image
 import time
 from tensorflow.keras.preprocessing import image
@@ -18,8 +18,11 @@ from Foodimg2Ing import app
 
 def output(uploadedfile):
 
+
     # Keep all the codes and pre-trained weights in data directory
-    data_dir=os.path.join(app.root_path,'data')
+    data_dir = '/home/dark/Desktop/Be MY Chef Ai/Be My Chef/data'
+    #data_dir = os.path.join(os.getcwd(), 'data')  # Using os.getcwd() instead of app.root_path
+
 
 
     # code will run in gpu if available and if the flag is set to True, else it will run on cpu
@@ -32,6 +35,8 @@ def output(uploadedfile):
     # code below was used to save vocab files so that they can be loaded without Vocabulary class
     ingrs_vocab = pickle.load(open(os.path.join(data_dir, 'ingr_vocab.pkl'), 'rb'))
     vocab = pickle.load(open(os.path.join(data_dir, 'instr_vocab.pkl'), 'rb'))
+
+
 
     ingr_vocab_size = len(ingrs_vocab)
     instrs_vocab_size = len(vocab)

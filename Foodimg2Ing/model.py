@@ -6,10 +6,10 @@ import torch
 import torch.nn as nn
 import random
 import numpy as np
-from Foodimg2Ing.modules.encoder import EncoderCNN, EncoderLabels
-from Foodimg2Ing.modules.transformer_decoder import DecoderTransformer
-from Foodimg2Ing.modules.multihead_attention import MultiheadAttention
-from Foodimg2Ing.utils.metrics import softIoU, MaskedCrossEntropyCriterion
+from modules.encoder import EncoderCNN, EncoderLabels
+from modules.transformer_decoder import DecoderTransformer
+from modules.multihead_attention import MultiheadAttention
+from utils.metrics import softIoU, MaskedCrossEntropyCriterion
 import pickle
 import os
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

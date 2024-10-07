@@ -1,3 +1,4 @@
+from Foodimg2Ing.output import output
 import streamlit as st
 
 
@@ -40,8 +41,6 @@ from utils.utils import (
 
 
 
-import requests
-from flask import Flask, render_template, request
 
 
 
@@ -50,9 +49,6 @@ from flask import Flask, render_template, request
 # Streamlit UI
 st.title("Be My Chef AI")
 st.write("Welcome to Be My Chef! Upload an image to generate recipes.")
-
-# Streamlit form for image upload
-uploaded_file = st.file_uploader("Choose a food image...", type=["jpg", "jpeg", "png"])
 
 
     
@@ -211,62 +207,56 @@ chef_beam = {
     "num_return_sequences": 1
 }
 
-def process_image(uploaded_file):
-    # Placeholder for image processing function
-    # Implement your image model to predict ingredients from the uploaded image
-    ingredients = ["tomato", "basil"]  # Example output
-    return ingredients
 
 # Load the text generator
 generator = load_text_generator()
 
+def predict(uploaded_file):
+    # Define the path to save the uploaded file in the 'static/images/' directory
+    static_dir = os.path.join(os.getcwd(), 'static/images/')
+    
+    # Ensure the static directory exists
+    if not os.path.exists(static_dir):
+        os.makedirs(static_dir)
+    
+    # Save the uploaded file
+    image_path = os.path.join(static_dir, uploaded_file.name)  # Use correct path construction
+    
+    with open(image_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+
+    # Generate the prediction (title, ingredients, and recipe)
+    title, ingredients, recipe = output(image_path)
+
+    # Return the generated content for display
+    return title, ingredients, recipe, image_path
+
+# Streamlit form for image upload
+uploaded_file = st.file_uploader("Choose a food image...", type=["jpg", "jpeg", "png"])
+
+
 if uploaded_file is not None:
-    # Display the uploaded image
     st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
-    
-    # Process the image and generate ingredients
-    st.write("Processing...")
-    ingredients = process_image(uploaded_file)
-    
-    # Display identified ingredients
-    st.write("Identified Ingredients:", ingredients)
-    
-    # Recipe generation logic
-    if ingredients:
-        chef = st.selectbox("Choose your chef", index=0, options=["Chef Scheherazade", "Chef Giovanni"], key='chef_selectbox')
-        recipe_button = st.button('Get Recipe!', key='get_recipe_button')
-        
-        if recipe_button:
-            with st.spinner("Generating recipe..."):
-                gen_kw = chef_top if chef == "Chef Scheherazade" else chef_beam
-                generated_recipe = generator.generate(ingredients, gen_kw)
+    st.write("Processing the uploaded image...")
 
-            # Display the recipe
-            st.markdown(f"### Recipe: {generated_recipe['title']}")
-            if generated_recipe['image']:
-                st.image(generated_recipe['image'], use_column_width=True)
-            st.markdown("#### Ingredients:")
-            st.markdown("\n".join(f"- {i}" for i in generated_recipe["ingredients"]))
-            st.markdown("#### Directions:")
-            st.markdown("\n".join(f"{d}" for d in generated_recipe["directions"]))
-
-def predict():
-    imagefile=request.files['imagefile']
-    image_path=os.path.join(app.root_path,'static/images/',imagefile.filename)
-    imagefile.save(image_path)
-    img="/images/"+imagefile.filename
-    title,ingredients,recipe = output(image_path)
-    return render_template('predict.html',title=title,ingredients=ingredients,recipe=recipe,img=img)
-
-def predictsample(samplefoodname):
-    imagefile=os.path.join(app.root_path,'static/images',str(samplefoodname)+".jpg")
-    img="/images/demo_imgs/"+str(samplefoodname)+".jpg"
-    title,ingredients,recipe = output(imagefile)
-    return render_template('predict.html',title=title,ingredients=ingredients,recipe=recipe,img=img)
+    # Call predict function to get the recipe details
+    title, ingredients, recipe, img_path = predict(uploaded_file)
+    
+    if ingredients and recipe:
+        st.write("Ingredients Identified:", ingredients)
+        st.markdown(f"### Recipe: {title}")
+        st.image(img_path, use_column_width=True)
+        st.markdown("#### Ingredients:")
+        st.markdown("\n".join(f"- {i}" for i in ingredients))
+        st.markdown("#### Directions:")
+        st.markdown("\n".join(f"{d}" for d in recipe))
+    else:
+        st.error("Could not generate the recipe. Please try again.")
 
 
 
 def main():
+    # At this point, set_page_config() has already been called at the top
 
     generator = load_text_generator()
 
@@ -314,20 +304,8 @@ def main():
         unsafe_allow_html=True
     )
     if recipe_button:
-        if recipe_button:
-         entered_items.markdown("**Generating recipe for:** " + items)
-         with st.spinner("Generating recipe..."):
-            gen_kw = chef_top if chef == "Chef Scheherazade" else chef_beam
-            generated_recipe = generator.generate(items, gen_kw)
-
-        # Display the recipe
-            st.markdown(f"### Recipe: {generated_recipe['title']}")
-            st.image(generated_recipe['image'], use_column_width=True)
-            st.markdown("#### Ingredients:")
-            st.markdown("\n".join(f"- {i}" for i in generated_recipe["ingredients"]))
-            st.markdown("#### Directions:")
-            st.markdown("\n".join(f"{d}" for d in generated_recipe["directions"]))
-
+        entered_items.markdown("**Generate recipe for:** " + items)
+        with st.spinner("Generating recipe..."):
 
             if not isinstance(items, str) or not len(items) > 1:
                 entered_items.markdown(
@@ -394,6 +372,7 @@ def main():
                         ]),
                         unsafe_allow_html=True
                     )
+
 
 if __name__ == '__main__':
     main()

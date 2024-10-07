@@ -47,8 +47,8 @@ from utils.utils import (
 
 
 # Streamlit UI
-st.title("Be My Chef AI")
-st.write("Welcome to Be My Chef! Upload an image to generate recipes.")
+st.markdown("<h1 style='text-align: center;'>Be My Chef AI</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Welcome to Be My Chef! Upload an image to generate recipes.</p>", unsafe_allow_html=True)
 
 
     
@@ -236,20 +236,27 @@ uploaded_file = st.file_uploader("Choose a food image...", type=["jpg", "jpeg", 
 
 
 if uploaded_file is not None:
-    st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
     st.write("Processing the uploaded image...")
 
     # Call predict function to get the recipe details
     title, ingredients, recipe, img_path = predict(uploaded_file)
     
     if ingredients and recipe:
-        st.write("Ingredients Identified:", ingredients)
+        st.write("Ingredients Identified:")
+
+        # Flatten the ingredients if they are in a list of lists
+        flat_ingredients = [item for sublist in ingredients for item in sublist]
+
         st.markdown(f"### Recipe: {title}")
         st.image(img_path, use_column_width=True)
         st.markdown("#### Ingredients:")
-        st.markdown("\n".join(f"- {i}" for i in ingredients))
+        st.markdown("".join(f"- {i}<br>" for i in flat_ingredients), unsafe_allow_html=True)
+
+        # Flatten the directions if they are also in a list of lists
+        flat_directions = [item for sublist in recipe for item in sublist]
+
         st.markdown("#### Directions:")
-        st.markdown("\n".join(f"{d}" for d in recipe))
+        st.markdown("".join(f"- {d}<br>" for d in flat_directions), unsafe_allow_html=True)
     else:
         st.error("Could not generate the recipe. Please try again.")
 

@@ -213,7 +213,7 @@ generator = load_text_generator()
 
 def predict(uploaded_file):
     # Define the path to save the uploaded file in the 'static/images/' directory
-    static_dir = os.path.join(os.getcwd(), 'static/images/')
+    static_dir = os.path.join(os.getcwd(), 'asset/Recipe Gen images/')
     
     # Ensure the static directory exists
     if not os.path.exists(static_dir):
@@ -242,8 +242,6 @@ if uploaded_file is not None:
     title, ingredients, recipe, img_path = predict(uploaded_file)
     
     if ingredients and recipe:
-        st.write("Ingredients Identified:")
-
         # Flatten the ingredients if they are in a list of lists
         flat_ingredients = [item for sublist in ingredients for item in sublist]
 

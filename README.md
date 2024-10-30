@@ -5,9 +5,13 @@
 
 Are you curious about recreating delicious dishes from just a picture? **Be My Chef AI** is here to help! This project leverages advanced AI models to generate detailed recipes based on food images. By analyzing a picture of a dish, the system predicts the ingredients and provides step-by-step cooking instructions to recreate it.
 
-## **Demo**
+<!--## **Demo**
 
 [![Demo Image](asset/Demo images/be my chef.png)](http://localhost:8501) <!-- Replace with a link to your demo video or live app -->
+## Project Link
+
+Check out the live version of the project [here](https://be-my-chef-ai.streamlit.app/).
+
 
 Upload an image, and watch as the AI generates a complete recipe for you!
 

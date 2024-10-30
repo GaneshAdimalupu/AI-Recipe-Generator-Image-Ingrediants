@@ -4,7 +4,7 @@ import streamlit as st
 
 # 1. Set the page configuration **immediately after imports**
 st.set_page_config(
-    page_title="Chef Transformer",
+    page_title="Be My Chef AI",
     page_icon="🍲",
     layout="wide",
     initial_sidebar_state="expanded"

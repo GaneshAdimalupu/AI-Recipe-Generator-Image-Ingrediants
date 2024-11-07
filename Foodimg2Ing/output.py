@@ -14,6 +14,7 @@ from PIL import Image
 import time
 from tensorflow.keras.preprocessing import image
 from Foodimg2Ing import app
+from Foodimg2Ing import routes
 
 
 def output(uploadedfile):

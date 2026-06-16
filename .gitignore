@@ -1,84 +1,97 @@
-.direnv/
-.envrc
-.mypy_cache/
-__pycache__/
-.env
+# ==============================================================================
+# Streamlit & Local Secrets (CRITICAL)
+# ==============================================================================
+.streamlit/secrets.toml
 _secret_auth_.json
-data/models--dark-side--ai-recipe-generator-model/
-data/.locks/
-eval\chef_Transformer_Evaluation\cache
-# Cache directories
-cache/
-**/cache/
-eval/chef_Transformer_Evaluation/cache/
-eval/RecipeNLG_Evaluation/cache/
-*.safetensors
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.cookies.json
+.streamlit-cookies/
 
-# Python cache files
+# ==============================================================================
+# Python - Compilation, Cache & Environments
+# ==============================================================================
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
 *.py[cod]
 *$py.class
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.egg-info/
+.eggs/
+dist/
+build/
+*.egg
 
-# VS Code cache
-.vscode/
-.history/
-*.code-workspace
-
-# Jupyter Notebook cache
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
-
-# Virtual Environment
+# Virtual Environments
 venv/
 env/
 ENV/
 .venv/
 .env/
+conda-env/
+.conda/
 
-# Distribution/packaging
-dist/
-build/
-*.egg-info/
-*.egg
-
-# Testing
-.pytest_cache/
-.coverage
-coverage.xml
-htmlcov/
-
-# Logs
-*.log
-logs/
-log/
-
-# Local development settings
-.env.local
-.env.development
-.env.test
-.env.production
-
-# IDE specific (in addition to VS Code)
-.idea/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Model checkpoints and large files
+# ==============================================================================
+# Machine Learning - Models, Checkpoints & Large Data
+# ==============================================================================
+data/models--dark-side--ai-recipe-generator-model/
+data/.locks/
 *.pkl
 *.h5
 *.pth
 *.ckpt
 *.bin
+*.safetensors
+*.onnx
 
-# Temporary files
+# Cache & Evaluation Directories
+cache/
+**/cache/
+eval/chef_Transformer_Evaluation/cache/
+eval/RecipeNLG_Evaluation/cache/
+eval/chef_Transformer_Evaluation/cache
+
+# ==============================================================================
+# IDEs & Editor Configuration
+# ==============================================================================
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# PyCharm / IntelliJ
+.idea/
+
+# Text Editors
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ==============================================================================
+# Operating System & Temporary Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
 tmp/
 temp/
 *.tmp
-*~
-
-*.streamlit/
+*.log
+logs/
+log/

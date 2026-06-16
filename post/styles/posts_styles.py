@@ -1,250 +1,116 @@
-
 def get_styles():
-    """Returns Instagram-like CSS styles for the social feed"""
+    """Returns Instagram-like CSS styles for the social feed, integrated with the global design system"""
     return """
     <style>
-        /* Global Styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: #262626;
-            background-color: #fafafa;
+        /* Social Feed Specific Styles */
+        
+        /* Post Interaction Buttons Styling */
+        div[data-testid="stVerticalBlock"]:has(> div [class*="post-card-marker"]) button {
+            background: rgba(255, 75, 75, 0.05) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--card-border) !important;
+            box-shadow: none !important;
+            border-radius: 20px !important;
+            padding: 0.35rem 1.2rem !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+            width: 100% !important;
         }
         
-        /* Custom Sidebar */
-        .sidebar .sidebar-content {
-            background-image: linear-gradient(180deg, #FF4B4B20 0%, #FF9A9A10 100%);
-            border-right: 1px solid #e6e6e6;
+        div[data-testid="stVerticalBlock"]:has(> div [class*="post-card-marker"]) button:hover {
+            background: rgba(255, 75, 75, 0.12) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            transform: translateY(-2px) !important;
         }
-        
-        .sidebar-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #FF4B4B, #FF9A9A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            padding: 10px 0;
-        }
-        
-        /* Instagram-like Post Card */
-        .post-card {
-            background-color: white;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.2s ease;
-            overflow: hidden;
-        }
-        
-        .post-card:hover {
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Post Header - Instagram Style */
-        .post-header {
-            display: flex;
-            align-items: center;
-            padding: 14px 16px;
-            border-bottom: 1px solid #efefef;
-        }
-        
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 12px;
-            border: 1px solid #efefef;
-        }
-        
-        .user-info {
-            flex: 1;
-        }
-        
-        .username {
-            font-weight: 600;
-            font-size: 14px;
-            color: #262626;
-            text-decoration: none;
-        }
-        
-        .post-meta {
-            font-size: 12px;
-            color: #8e8e8e;
-        }
-        
-        .post-options {
-            font-size: 16px;
-            color: #262626;
-        }
-        
-        /* Post Image */
-        .post-image-container {
-            position: relative;
-            width: 100%;
-        }
-        
-        .post-image {
-            width: 100%;
-            display: block;
-        }
-        
-        /* Post Actions Bar */
-        .post-actions {
-            display: flex;
-            padding: 8px 16px;
-            border-top: 1px solid #efefef;
-        }
-        
-        .action-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            margin-right: 16px;
-            font-size: 22px;
-            transition: color 0.2s;
-        }
-        
-        .action-button:hover {
-            color: #FF4B4B;
-        }
-        
-        .like-button.active {
-            color: #FF4B4B;
-        }
-        
-        /* Post Content */
-        .post-content {
-            padding: 12px 16px;
-        }
-        
-        .post-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        
-        .post-text {
-            font-size: 14px;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        
-        /* Tags */
+
+        /* Post tags styling */
         .tag-container {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin: 8px 0;
+            margin: 12px 0;
         }
         
         .tag {
-            background-color: #fafafa;
-            color: #00376b;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            transition: background-color 0.2s;
+            background-color: rgba(255, 75, 75, 0.08);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
         }
         
         .tag:hover {
-            background-color: #efefef;
+            background-color: rgba(255, 75, 75, 0.15);
+            transform: scale(1.05);
         }
         
         /* Comments Section */
         .comments-section {
             padding: 12px 16px;
-            border-top: 1px solid #efefef;
+            border-top: 1px solid var(--card-border);
             max-height: 300px;
             overflow-y: auto;
-        }
-        
-        .view-all-comments {
-            color: #8e8e8e;
-            font-size: 14px;
-            margin-bottom: 8px;
-            cursor: pointer;
+            background: rgba(255, 75, 75, 0.01);
+            border-radius: 12px;
+            margin-top: 10px;
         }
         
         .comment-item {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            animation: fadeIn 0.3s ease-out;
         }
         
         .comment-avatar {
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            margin-right: 12px;
+            border: 1px solid var(--card-border);
         }
         
         .comment-content {
-            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 12px;
+            border-radius: 12px;
+            flex-size: 1;
         }
         
         .comment-username {
-            font-weight: 600;
-            font-size: 13px;
-            margin-right: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 2px;
         }
         
         .comment-text {
-            font-size: 13px;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            line-height: 1.4;
         }
         
         .comment-time {
-            font-size: 12px;
-            color: #8e8e8e;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
             margin-top: 4px;
         }
-        
-        .comment-like {
-            font-size: 12px;
-            color: #8e8e8e;
-            margin-left: 8px;
-            cursor: pointer;
-        }
-        
-        /* Add Comment Form */
-        .add-comment-form {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            border-top: 1px solid #efefef;
-        }
-        
-        .comment-input {
-            flex: 1;
-            border: none;
-            padding: 8px 0;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        .post-comment-button {
-            background: none;
-            color: #0095f6;
-            border: none;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        .post-comment-button:disabled {
-            color: #b3dbff;
-            cursor: default;
-        }
-        
+
         /* Stories Bar */
         .stories-bar {
             display: flex;
             overflow-x: auto;
             padding: 16px;
             margin-bottom: 24px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow);
         }
         
         .story-item {
@@ -259,7 +125,7 @@ def get_styles():
             width: 62px;
             height: 62px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #fd5949, #d6249f, #285AEB);
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
             padding: 2px;
             margin-bottom: 6px;
         }
@@ -268,13 +134,14 @@ def get_styles():
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 2px solid white;
+            border: 2px solid var(--card-bg);
             object-fit: cover;
         }
         
         .story-username {
-            font-size: 12px;
-            color: #262626;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-color);
             max-width: 64px;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -282,11 +149,11 @@ def get_styles():
             text-align: center;
         }
         
-        /* Instagram-like Explore Grid */
+        /* Explore Grid */
         .explore-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            gap: 12px;
             margin-bottom: 24px;
         }
         
@@ -294,27 +161,31 @@ def get_styles():
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
             cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .explore-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
         }
         
         .explore-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .explore-item:hover .explore-image {
-            transform: scale(1.05);
         }
         
         .explore-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             display: flex;
             justify-content: center;
@@ -329,82 +200,8 @@ def get_styles():
         .explore-stats {
             display: flex;
             color: white;
-            font-weight: 600;
-        }
-        
-        .explore-stat {
-            display: flex;
-            align-items: center;
-            margin: 0 8px;
-        }
-        
-        .explore-stat-icon {
-            margin-right: 4px;
-        }
-        
-        /* Enhanced Sidebar Navigation */
-        .sidebar-nav {
-            margin-top: 20px;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            transition: background-color 0.2s;
-            cursor: pointer;
-        }
-        
-        .nav-item:hover {
-            background-color: rgba(255, 75, 75, 0.1);
-        }
-        
-        .nav-item.active {
-            background-color: rgba(255, 75, 75, 0.2);
-            font-weight: 600;
-        }
-        
-        .nav-icon {
-            font-size: 20px;
-            margin-right: 12px;
-            width: 24px;
-            text-align: center;
-        }
-        
-        .nav-text {
-            font-size: 14px;
-        }
-        
-        /* Profile Section in Sidebar */
-        .sidebar-profile {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            border-top: 1px solid #efefef;
-            margin-top: 24px;
-        }
-        
-        .sidebar-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            margin-right: 12px;
-        }
-        
-        .sidebar-user-info {
-            flex: 1;
-        }
-        
-        .sidebar-username {
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        .sidebar-name {
-            font-size: 12px;
-            color: #8e8e8e;
+            font-weight: 700;
+            gap: 15px;
         }
         
         /* Responsive adjustments */
@@ -413,50 +210,12 @@ def get_styles():
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
-        /* Dark Mode Support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                color: #fafafa;
-            }
-            
-            .post-card, .stories-bar {
-                background-color: #1e1e1e;
-                border: 1px solid #2e2e2e;
-            }
-            
-            .post-header, .post-actions, .comments-section, .add-comment-form {
-                border-color: #2e2e2e;
-            }
-            
-            .username, .post-title {
-                color: #fafafa;
-            }
-            
-            .post-meta, .comment-time, .view-all-comments {
-                color: #a8a8a8;
-            }
-            
-            .tag {
-                background-color: #2e2e2e;
-                color: #b3dbff;
-            }
-            
-            .comment-input {
-                background-color: transparent;
-                color: #fafafa;
-            }
-            
-            .sidebar .sidebar-content {
-                background-image: linear-gradient(180deg, #1e1e1e 0%, #2e2e2e 100%);
-                border-right: 1px solid #2e2e2e;
-            }
-        }
     </style>
     """
 
 def apply_post_styles():
-    """Apply the Instagram-like styles to the current Streamlit page"""
+    """Apply the social feed styles to the current Streamlit page"""
     import streamlit as st
+    from home.styles import load_custom_css
+    load_custom_css()  # Apply global styles first
     st.markdown(get_styles(), unsafe_allow_html=True)

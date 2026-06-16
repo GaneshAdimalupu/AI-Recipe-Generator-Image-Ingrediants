@@ -92,8 +92,8 @@ def predict_from_image(uploaded_file):
 
 def display_recipe_card(title, ingredients, instructions, nutrition, image_path=None):
     """Display recipe information in an enhanced, aesthetic card format"""
-    # Main recipe card container
-    st.markdown('<div class="recipe-card">', unsafe_allow_html=True)
+    # Inject container card marker
+    st.markdown('<div class="recipe-card-marker"></div>', unsafe_allow_html=True)
 
     # Title section with elegant styling
     st.markdown(f'<h1 class="recipe-title">🍳 {title}</h1>', unsafe_allow_html=True)
@@ -107,29 +107,75 @@ def display_recipe_card(title, ingredients, instructions, nutrition, image_path=
             st.markdown("<br>", unsafe_allow_html=True)
 
         # Nutrition section with modern design
-        st.markdown('<div class="nutrition-card">', unsafe_allow_html=True)
+        st.markdown('<div class="nutrition-card" style="border: 1px solid var(--card-border); border-radius: 15px; padding: 1.5rem; background: rgba(255, 75, 75, 0.01);">', unsafe_allow_html=True)
         st.markdown("#### 📊 Nutrition Facts")
 
-        # Create three columns for nutrition metrics
-        metric_cols = st.columns(3)
-        for idx, (nutrient, value) in enumerate(nutrition.items()):
-            with metric_cols[idx % 3]:
-                st.metric(nutrient.capitalize(), f"{value}g" if isinstance(value, (int, float)) else value)
+        # Visual progress rings for nutrition
+        badges_html = '<div class="nutrition-grid" style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin: 15px 0;">'
+        
+        colors = {
+            "calories": "#FF4B4B",
+            "protein": "#2ECC71",
+            "carbs": "#3498DB",
+            "fat": "#E67E22",
+            "fiber": "#9B59B6"
+        }
+        
+        daily_values = {
+            "calories": 2000,
+            "protein": 50,
+            "carbs": 300,
+            "fat": 65,
+            "fiber": 25
+        }
+        
+        for nutrient, value in nutrition.items():
+            nut_key = nutrient.lower()
+            try:
+                val_clean = float(str(value).replace('g', '').strip())
+            except ValueError:
+                val_clean = 0.0
+            
+            dv = daily_values.get(nut_key, 100)
+            pct = min(100.0, (val_clean / dv) * 100) if dv > 0 else 0.0
+            
+            # Circumference = 2 * pi * r = 2 * 3.14159 * 25 = 157.08
+            offset = 157.08 - (pct / 100) * 157.08
+            color = colors.get(nut_key, "#FF4B4B")
+            unit = "" if nut_key == "calories" else "g"
+            
+            badges_html += f"""
+                <div class="nutrition-badge" style="position: relative; display: flex; flex-direction: column; align-items: center; width: 75px;">
+                    <svg class="progress-ring" width="60" height="60" style="transform: rotate(-90deg);">
+                        <circle stroke="rgba(0,0,0,0.05)" stroke-width="4" fill="transparent" r="25" cx="30" cy="30"/>
+                        <circle stroke="{color}" stroke-dasharray="157.08" stroke-dashoffset="{offset}" stroke-width="4" fill="transparent" r="25" cx="30" cy="30" style="transition: stroke-dashoffset 0.35s; transform-origin: 50% 50%;"/>
+                    </svg>
+                    <div style="position: absolute; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--text-color); top: 0; left: 0;">
+                        {int(val_clean)}{unit}
+                    </div>
+                    <div style="margin-top: 5px; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">{nutrient.capitalize()}</div>
+                </div>
+            """
+        badges_html += '</div>'
+        st.markdown(badges_html, unsafe_allow_html=True)
 
         # Interactive nutrition chart
         fig = px.pie(
-            values=list(nutrition.values()),
-            names=list(nutrition.keys()),
-            hole=0.3,
+            values=[float(str(v).replace('g','').strip()) for k, v in nutrition.items() if k.lower() != 'calories'],
+            names=[k.capitalize() for k in nutrition.keys() if k.lower() != 'calories'],
+            hole=0.4,
             color_discrete_sequence=px.colors.qualitative.Set3,
         )
         fig.update_layout(
+            font=dict(family="Plus Jakarta Sans, sans-serif"),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
             showlegend=True,
             legend=dict(
-                orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
+                orientation="h", yanchor="bottom", y=-0.1, xanchor="center", x=0.5
             ),
-            margin=dict(t=0, b=0, l=0, r=0),
-            height=300,
+            margin=dict(t=10, b=10, l=10, r=10),
+            height=220,
         )
         st.plotly_chart(fig, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
@@ -150,12 +196,10 @@ def display_recipe_card(title, ingredients, instructions, nutrition, image_path=
         st.markdown("#### 👩‍🍳 Instructions")
         for i, step in enumerate(instructions, 1):
             st.markdown(
-                f'<div class="instruction-step">Step {i}: {step}</div>',
+                f'<div class="instruction-step"><span class="step-number">{i}</span>{step}</div>',
                 unsafe_allow_html=True,
             )
         st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
 
 def load_image_from_url(url, target_size=None):
     """Load an image from a URL"""

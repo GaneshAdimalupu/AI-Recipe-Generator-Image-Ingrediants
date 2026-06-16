@@ -27,6 +27,27 @@ login_ui = __login__(
 # Get current user
 current_user = login_ui.get_username()
 
+from home.styles import load_custom_css
+load_custom_css()
+
+# Add chat styling overrides
+st.markdown("""
+<style>
+.chat-message {
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.stChatMessage:has([data-testid="chatAvatarIcon-user"]),
+div[data-testid="stChatMessage"]:has(div[class*="avatar"]) {
+    /* Style default Streamlit chat messages for a premium feel */
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Show navigation sidebar
 login_ui.nav_sidebar()
 
@@ -35,8 +56,12 @@ def stream_data(text, delay: float = 0.02):
         yield word + " "
         time.sleep(delay)
 
-st.title("🧠 Chef AI Companion")
-st.caption("🚀 Your can ask me anything related to cooking and I will help you out with the recipe")
+st.markdown("""
+    <div class="page-header">
+        <h1>🧠 Chef AI Companion</h1>
+        <p>🚀 Ask anything related to cooking, ingredient substitutions, or recipe suggestions!</p>
+    </div>
+""", unsafe_allow_html=True)
 
 # Get the Google API key from Streamlit secrets
 # Your .streamlit/secrets.toml has API_KEY directly under [mongo]

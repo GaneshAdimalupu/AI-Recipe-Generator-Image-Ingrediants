@@ -117,63 +117,63 @@ if "search_history" not in st.session_state:
     st.session_state.search_history = []
 
 # Add custom CSS for styling
+from home.styles import load_custom_css
+load_custom_css()
+
 st.markdown("""
 <style>
 .chat-message {
-    padding: 1.5rem;
-    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
     margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 .user-message {
-    background-color: #e3f2fd;
-    border-left: 5px solid #2196f3;
+    background-color: rgba(33, 150, 243, 0.08);
+    border-left: 4px solid #2196f3;
+    color: var(--text-color);
 }
 
 .assistant-message {
-    background-color: #f5f5f5;
-    border-left: 5px solid #ff4b4b;
+    background-color: rgba(255, 75, 75, 0.06);
+    border-left: 4px solid var(--primary);
+    color: var(--text-color);
 }
 
 .recipe-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 15px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.2rem;
     margin: 10px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .recipe-info {
     display: flex;
     gap: 15px;
     margin-top: 10px;
-    font-size: 0.9em;
-    color: #666;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    .recipe-card {
-        background-color: #2d2d2d;
-    }
-    .user-message {
-        background-color: #1a3a4a;
-    }
-    .assistant-message {
-        background-color: #2d2d2d;
-    }
+    font-size: 0.85em;
+    color: var(--text-secondary);
 }
 </style>
 """, unsafe_allow_html=True)
 
 # Main page layout
-st.title("👩‍🍳 Recipe Chat Assistant")
 st.markdown("""
-Ask me anything about recipes, cooking techniques, or ingredients! I'll help you find 
-recipes and provide cooking advice.
-""")
+    <div class="page-header">
+        <h1>👩‍🍳 Recipe Chat Assistant</h1>
+        <p>Ask anything about recipes, cooking techniques, or ingredients! I'll help you find recipes and provide cooking advice.</p>
+    </div>
+""", unsafe_allow_html=True)
 
 # Quick action buttons
 quick_actions = [

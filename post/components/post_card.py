@@ -38,16 +38,15 @@ def render_post_card(post, username, view_type="feed"):
     - view_type: Type of view (feed, trending, saved, my_posts) to ensure unique keys
     """
     with st.container():
+        st.markdown('<div class="post-card-marker"></div>', unsafe_allow_html=True)
         # Post header
         st.markdown(f"""
-            <div class="post-card">
-                <div class="post-header">
-                    <img src="https://api.dicebear.com/6.x/avataaars/svg?seed={post['user']}"
-                         style="width: 50px; height: 50px; border-radius: 50%;">
-                    <div class="user-info">
-                        <div class="username">{post['user']}</div>
-                        <div class="post-meta">{format_time(post['time'])}</div>
-                    </div>
+            <div class="post-header" style="display: flex; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--card-border); margin-bottom: 15px;">
+                <img src="https://api.dicebear.com/6.x/avataaars/svg?seed={post['user']}"
+                     style="width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--primary); margin-right: 12px;">
+                <div class="user-info">
+                    <div class="username" style="font-weight: 700; font-size: 0.95rem; color: var(--text-color);">@{post['user']}</div>
+                    <div class="post-meta" style="font-size: 0.8rem; color: var(--text-secondary);">{format_time(post['time'])}</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)

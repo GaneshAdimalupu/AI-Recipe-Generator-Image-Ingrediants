@@ -1,163 +1,103 @@
-"""Recipe page styles"""
-
 def apply_recipe_styles():
-    """Apply recipe page styles"""
+    """Apply recipe page styles, integrated with the global design system"""
+    from home.styles import load_custom_css
+    load_custom_css()  # Apply global styling first
+    
     return """
     <style>
-        /* Base Variables */
-        :root {
-            --primary-color: #FF4B4B;
-            --primary-hover: #ff6b6b;
-            --bg-color: #ffffff;
-            --card-bg: #ffffff;
-            --text-color: #1a1a1b;
-            --text-secondary: #666;
-            --border-color: #e6e6e6;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-            --transition-speed: 0.3s;
-            --primary-color-rgb: 255, 75, 75;
-            --light-purple: #E6E6FA;  
-
-        }
-
-        .page-title {
-            color: var(--primary-color);
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .page-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
+        /* Indian Recipe Explorer Styling Overrides */
+        
+        .results-count {
             font-size: 1.1rem;
-            margin-bottom: 2rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 1rem 0;
+        }
+        
+        .results-count .highlight {
+            color: var(--primary);
+            font-weight: 800;
         }
 
-        .view-selector {
-            background-color: var(--bg-color);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
+        /* Customize Recipe Card Buttons */
+        div[data-testid="stVerticalBlock"]:has(> div [class*="recipe-card-marker"]) button {
+            background: rgba(255, 75, 75, 0.05) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--card-border) !important;
+            box-shadow: none !important;
+            border-radius: 20px !important;
+            padding: 0.35rem 1.2rem !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+            width: 100% !important;
+        }
+        
+        div[data-testid="stVerticalBlock"]:has(> div [class*="recipe-card-marker"]) button:hover {
+            background: rgba(255, 75, 75, 0.12) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            transform: translateY(-2px) !important;
         }
 
-        .search-bar {
-            margin: 1.5rem 0;
+        /* Ingredients Grid */
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .recipe-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 12px 0;
+            font-style: italic;
         }
 
-        .search-bar input {
+        /* Image hover effects */
+        .recipe-image {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 25px;
-            border: 1px solid var(--border-color);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            margin: 1rem 0;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--card-border);
         }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+        
+        .recipe-image:hover {
+            transform: scale(1.01);
         }
-
-        /* Recipe Card Styles */
-        .recipe-card {
-            background-color: var(--light-purple);
-            border-radius: 16px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-speed) ease;
-            animation: cardEntrance 0.5s ease-out;
-            border: 1px solid var(--border-color);
-            color: #000;
-
-        }
-
-        .recipe-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
-        }
-
-        .recipe-title {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .recipe-info {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .info-tag {
-            background-color: rgba(var(--primary-color-rgb), 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        
+        .recipe-image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 75, 75, 0.02);
+            border-radius: 12px;
+            border: 1px dashed var(--card-border);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            # color: #000;
-
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .placeholder-content {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .placeholder-content span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .info-tag:hover {
-            background-color: rgba(var(--primary-color-rgb), 0.2);
+        /* Action Buttons Hover (HTML) */
+        .action-button:hover {
+            background: rgba(255, 75, 75, 0.1) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
             transform: translateY(-2px);
-        }
-
-        /* Animations */
-        @keyframes cardEntrance {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Dark Mode Support */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #1a1a1b;
-                --card-bg: #262626;
-                --text-color: #e6e6e6;
-                --text-secondary: #b0b0b0;
-                --border-color: #404040;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .recipe-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .recipe-card {
-                padding: 1rem;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
         }
     </style>
     """

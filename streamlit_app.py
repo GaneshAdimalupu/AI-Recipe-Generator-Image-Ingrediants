@@ -17,8 +17,10 @@ st.set_page_config(
 )
 from pages.widgets import __login__
 
-
 def main():
+    from home.styles import load_custom_css
+    load_custom_css()
+
     login_ui = __login__(
         auth_token="your_courier_auth_token",
         company_name="Be My Chef AI",
@@ -33,7 +35,6 @@ def main():
     # If logged in, redirect to home page
     if is_logged_in and st.session_state.get("current_page") == "home":
         st.switch_page("pages/home.py")
-
 
 if __name__ == "__main__":
     main()

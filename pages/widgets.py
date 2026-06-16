@@ -259,33 +259,22 @@ class __login__:
                 
                 # User profile section at the top of sidebar
                 st.markdown("---")
-                col1, col2 = st.columns([1, 3])
+                profile_pic = get_profile_picture(username)
+                profile_pic_src = f"data:image/jpeg;base64,{profile_pic}" if profile_pic else f"https://api.dicebear.com/6.x/avataaars/svg?seed={username}"
                 
-                with col1:
-                     # Check if user has a profile picture in database
-                    profile_pic = get_profile_picture(username)
-                    
-                    if profile_pic:
-                        # Display the user's profile picture from database
-                        st.markdown(f"""
-                            <div class="profile-picture-container">
-                                <img src="data:image/jpeg;base64,{profile_pic}" class="profile-picture" alt="Profile Picture">
-                            </div>
-                        """, unsafe_allow_html=True)
-                    else:
-                        # Display avatar from dicebear as fallback
-                        st.image(
-                            f"https://api.dicebear.com/6.x/avataaars/svg?seed={username}",
-                            width=150,
-                            caption="Default Profile Picture"
-                        )
+                st.markdown(f"""
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; margin-bottom: 8px;">
+                        <img src="{profile_pic_src}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 1rem; color: var(--text-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px;">@{username}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">Gourmet Chef</div>
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
                 
-                with col2:
-                    # Display username and link to profile
-                    st.markdown(f"### {username}")
-                    if st.button("View Profile", key="view_profile_button", use_container_width=True):
-                        st.session_state.current_view = 'profile'
-                        st.switch_page("pages/profile.py")
+                if st.button("👤 View Profile", key="view_profile_button", use_container_width=True):
+                    st.session_state.current_view = 'profile'
+                    st.switch_page("pages/profile.py")
                 
                 st.markdown("---")
 
@@ -421,8 +410,7 @@ class __login__:
                 render_chatbot_content()
             elif current_view == 'profile':
                 from pages.profile import render_profile_page
-                render_profile_page()
-                current_user = st.session_state.get('username')
+                current_user = self.get_username()
                 render_profile_page(current_user) 
         except Exception as e:
             st.error(f"Error loading content: {str(e)}")
@@ -481,18 +469,27 @@ class __login__:
             self.render_page_content()
         else:
             # Handle non-logged-in state
-            if selected_option == "Login":
-                c1, c2 = st.columns([7, 3])
-                with c1:
-                    self.login_widget()
-                with c2:
-                    self.animation()
-            elif selected_option == "Create Account":
-                self.sign_up_widget()
-            elif selected_option == "Forgot Password?":
-                self.forgot_password()
-            elif selected_option == "Reset Password":
-                self.reset_password()
+            with st.container():
+                st.markdown('<div class="login-card-marker"></div>', unsafe_allow_html=True)
+                st.markdown("""
+                    <div class="page-header" style="margin-bottom: 2rem;">
+                        <h1>🍳 Be My Chef AI</h1>
+                        <p>Your Intelligent Culinary Companion</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                if selected_option == "Login":
+                    c1, c2 = st.columns([7, 3])
+                    with c1:
+                        self.login_widget()
+                    with c2:
+                        self.animation()
+                elif selected_option == "Create Account":
+                    self.sign_up_widget()
+                elif selected_option == "Forgot Password?":
+                    self.forgot_password()
+                elif selected_option == "Reset Password":
+                    self.reset_password()
 
         if self.hide_menu_bool:
             self.hide_menu()

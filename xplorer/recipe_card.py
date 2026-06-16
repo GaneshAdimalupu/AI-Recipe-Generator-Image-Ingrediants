@@ -21,29 +21,25 @@ def load_image(url):
 def render_recipe_card(recipe, current_user, index):
     """Render a single recipe card with animations"""
     with st.container():
+        st.markdown('<div class="recipe-card-marker"></div>', unsafe_allow_html=True)
         st.markdown(f"""
-            <div class="recipe-card" data-index="{index}">
-                <div class="recipe-header">
-                    <h2 class="recipe-title">{recipe['name']}</h2>
-                    <div class="recipe-info">
-                        <span class="info-tag">
-                            <span>🍽️</span>
-                            <span>{recipe['course']}</span>
-                        </span>
-                        <span class="info-tag">
-                            <span>👨‍🍳</span>
-                            <span>{recipe['cuisine']}</span>
-                        </span>
-                        <span class="info-tag">
-                            <span>🥗</span>
-                            <span>{recipe['diet']}</span>
-                        </span>
-                        <span class="info-tag">
-                            <span>⏱️</span>
-                            <span>{recipe['prep_time']}</span>
-                        </span>
-                    </div>
+            <div class="recipe-header" style="padding-bottom: 12px; border-bottom: 1px solid var(--card-border); margin-bottom: 15px;">
+                <h2 class="recipe-title" style="margin: 0 0 10px 0; font-size: 1.6rem; color: var(--primary); font-weight: 700;">{recipe['name']}</h2>
+                <div class="recipe-info" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="info-tag" style="background: rgba(255, 75, 75, 0.08); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                        <span>🍽️</span> <span>{recipe['course']}</span>
+                    </span>
+                    <span class="info-tag" style="background: rgba(255, 75, 75, 0.08); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                        <span>👨‍🍳</span> <span>{recipe['cuisine']}</span>
+                    </span>
+                    <span class="info-tag" style="background: rgba(255, 75, 75, 0.08); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                        <span>🥗</span> <span>{recipe['diet']}</span>
+                    </span>
+                    <span class="info-tag" style="background: rgba(255, 75, 75, 0.08); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                        <span>⏱️</span> <span>{recipe['prep_time']}</span>
+                    </span>
                 </div>
+            </div>
         """, unsafe_allow_html=True)
 
         # Save button
@@ -141,19 +137,18 @@ def render_recipe_card(recipe, current_user, index):
 
         # Action buttons
         st.markdown("""
-            <div class="recipe-actions">
-                <button class="action-button share-button">
-                    <span>🔗</span>
-                    <span>Share Recipe</span>
+            <div class="recipe-actions" style="display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid var(--card-border); padding-top: 12px;">
+                <button class="action-button share-button" style="background: transparent; border: 1px solid var(--card-border); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--text-color); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                    <span>🔗</span> <span>Share Recipe</span>
                 </button>
-                <button class="action-button print-button">
-                    <span>🖨️</span>
-                    <span>Print Recipe</span>
+                <button class="action-button print-button" style="background: transparent; border: 1px solid var(--card-border); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--text-color); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                    <span>🖨️</span> <span>Print Recipe</span>
                 </button>
             </div>
+            <script>
+                // Add hover interactions dynamically via inline script or just CSS
+            </script>
         """, unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
 
 def render_ingredients(ingredients_str):
     """Render ingredients list with animations"""

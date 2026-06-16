@@ -291,14 +291,14 @@ def render_profile_page(username):
     </style>
     """, unsafe_allow_html=True)
     
+    from home.styles import load_custom_css
+    load_custom_css()
+    
     # Get user stats
     posts_count, followers_count, following_count = get_profile_stats(username)
     
     # Create container for profile section
-    st.markdown('<div class="profile-section">', unsafe_allow_html=True)
-    
-    # Create header with profile picture and info
-    st.markdown('<div class="profile-header">', unsafe_allow_html=True)
+    st.markdown('<div class="profile-section-marker"></div>', unsafe_allow_html=True)
     
     # Left column - Profile picture
     col1, col2 = st.columns([1, 2])
@@ -310,17 +310,17 @@ def render_profile_page(username):
         if profile_pic:
             # Display the user's profile picture from database
             st.markdown(f"""
-                <div class="profile-picture-container">
-                    <img src="data:image/jpeg;base64,{profile_pic}" class="profile-picture" alt="Profile Picture">
+                <div class="profile-picture-container" style="text-align: center; margin-bottom: 15px;">
+                    <img src="data:image/jpeg;base64,{profile_pic}" style="width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: var(--shadow);">
                 </div>
             """, unsafe_allow_html=True)
         else:
             # Display avatar from dicebear as fallback
-            st.image(
-                f"https://api.dicebear.com/6.x/avataaars/svg?seed={username}",
-                width=150,
-                caption="Default Profile Picture"
-            )
+            st.markdown(f"""
+                <div class="profile-picture-container" style="text-align: center; margin-bottom: 15px;">
+                    <img src="https://api.dicebear.com/6.x/avataaars/svg?seed={username}" style="width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: var(--shadow);">
+                </div>
+            """, unsafe_allow_html=True)
         
         # Profile picture upload functionality
         show_upload = st.checkbox("Change profile picture", key="show_upload")
@@ -340,20 +340,33 @@ def render_profile_page(username):
     
     with col2:
         # Username and Edit Profile Button
-        st.markdown(f"### @{username}")
+        st.markdown(f"""
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                <span style="font-size: 1.8rem; font-weight: 800; color: var(--text-color);">@{username}</span>
+            </div>
+        """, unsafe_allow_html=True)
         
         # Edit profile button
-        if st.button("Edit Profile", key="edit_profile"):
+        if st.button("✏️ Edit Bio", key="edit_profile"):
             st.session_state.editing_profile = True
         
-        # Stats Row
-        stats_col1, stats_col2, stats_col3 = st.columns(3)
-        with stats_col1:
-            st.markdown(f"**{posts_count}** posts")
-        with stats_col2:
-            st.markdown(f"**{followers_count}** followers")
-        with stats_col3:
-            st.markdown(f"**{following_count}** following")
+        # Stats Row (HTML for perfect control)
+        st.markdown(f"""
+            <div style="display: flex; gap: 30px; margin: 15px 0;">
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--primary);">{posts_count}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Posts</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--primary);">{followers_count}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Followers</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--primary);">{following_count}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Following</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
         
         # Bio Section
         user_data = users_collection.find_one({"username": username}) or {}
@@ -382,10 +395,12 @@ def render_profile_page(username):
                     st.rerun()
         else:
             # Display bio and location
-            st.markdown(bio)
-            st.markdown(location)
-    
-    st.markdown('</div>', unsafe_allow_html=True)  # Close profile-header
+            st.markdown(f"""
+                <div style="margin-top: 10px; line-height: 1.5;">
+                    <div style="font-weight: 500; color: var(--text-color); margin-bottom: 5px;">{bio}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">{location}</div>
+                </div>
+            """, unsafe_allow_html=True)
     
     # Posts Grid Section
     st.markdown("### Posts")
@@ -420,7 +435,6 @@ def render_profile_page(username):
     else:
         st.info("No posts yet! Share your first recipe to get started.")
 
-    st.markdown('</div>', unsafe_allow_html=True)  # Close profile-section
 
 
 def main():
